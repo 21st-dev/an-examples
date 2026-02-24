@@ -10,13 +10,13 @@ const chat = createAnChat({
 })
 
 export default function Home() {
-  const { messages, handleSubmit, status, stop, error } = useChat({ chat })
+  const { messages, sendMessage, status, stop, error } = useChat({ chat })
 
   return (
     <main className="h-screen">
       <AnAgentChat
         messages={messages}
-        onSend={(msg) => handleSubmit(undefined, { body: msg })}
+        onSend={(msg) => sendMessage({ text: msg.content })}
         status={status}
         onStop={stop}
         error={error ?? undefined}

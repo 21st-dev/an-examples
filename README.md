@@ -8,6 +8,8 @@ Example projects for the [AN SDK](https://an.dev) — deploy AI coding agents an
 |---------|-------------|-------|
 | [`nextjs-chat`](./nextjs-chat) | Chat UI connected to a deployed agent with web search | Next.js, @an-sdk |
 | [`nextjs-fill-form`](./nextjs-fill-form) | AI-powered form filling with tabbed forms + chat | Next.js, React Hook Form, @an-sdk |
+| [`email-agent`](./email-agent) | Intro email assistant that drafts + sends via AgentMail | Next.js, AgentMail, @an-sdk |
+| [`note-taker`](./note-taker) | AI notebook assistant with persistent notes via Convex | Next.js, Convex, @an-sdk |
 | [`monitor-agent`](./monitor-agent) | Service health monitoring with Slack alerts | Node.js CLI, @an-sdk |
 
 ## Quick Start

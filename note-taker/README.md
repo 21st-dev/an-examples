@@ -1,43 +1,107 @@
 # Note Taker Agent
 
-An AI notebook assistant that saves, searches, updates, and deletes notes — built with [An SDK](https://an.dev) and [Convex](https://convex.dev).
+Build an AI notebook assistant that saves, searches, updates, and deletes notes with real-time sync via Convex — built with [An SDK](https://an.dev) and [Convex](https://convex.dev).
 
 Chat naturally. Notes persist across sessions in Convex.
 
-## 5-Minute Quick Start
+## What you'll build
+
+A three-panel Next.js app — thread sidebar, chat, and live notes panel — powered by a Claude Code agent with 6 custom CRUD tools.
+
+- **6 custom tools** — `save_note`, `search_notes`, `list_notes`, `get_notes_by_tag`, `update_note`, `delete_note`
+- **Skills as markdown files** — behavior rules and response formatting, no recompile needed
+- **CLAUDE.md guardrails** — restricts the agent to its 6 custom tools only
+- **Three-panel layout** — threads sidebar + chat + notes panel
+- **Custom tool renderers** — visual note operation feedback
+- **Convex real-time subscriptions** — live note updates without polling
+
+## Prerequisites
+
+- Node.js 18+
+- An [An](https://an.dev) account with an API key
+- A [Convex](https://www.convex.dev) account (free tier works)
+
+## Environment variables
+
+| Variable | Where | Description |
+|----------|-------|-------------|
+| `AN_API_KEY` | `.env.local` | Server-side API key (`an_sk_`) for token exchange |
+| `NEXT_PUBLIC_CONVEX_URL` | `.env.local` | Convex deployment URL for the React client |
+| `CONVEX_URL` | An dashboard env vars | Same Convex URL — set in An dashboard so the agent sandbox can reach Convex |
+
+## Quick start
+
+### 1. Clone and install
 
 ```bash
-# 1. Clone and install
 git clone https://github.com/21st-dev/an-examples.git
 cd an-examples/note-taker
 npm install
+```
 
-# 2. Set up Convex
+### 2. Set up Convex
+
+```bash
 npx convex dev
-# Copy the deployment URL when prompted
+# Copy the deployment URL from the output
+```
 
-# 3. Configure environment
+### 3. Deploy the agent
+
+```bash
+npx @an-sdk/cli login
+npx @an-sdk/cli deploy
+```
+
+After deploying, go to the An dashboard and add `CONVEX_URL` to your agent's environment variables. This lets the agent sandbox connect to your Convex database.
+
+### 4. Configure and run
+
+```bash
 cp .env.example .env.local
-# Edit .env.local:
-#   AN_API_KEY=an_sk_your_key
-#   NEXT_PUBLIC_CONVEX_URL=https://your-project.convex.cloud
-#   CONVEX_URL=https://your-project.convex.cloud
-
-# 4. Login to An and deploy the agent
-npm run login
-npm run deploy
-
-# 5. Set CONVEX_URL in An dashboard env vars
-# An dashboard -> your agent -> Environment Variables
-# Add: CONVEX_URL=https://your-project.convex.cloud
-
-# 6. Run
+# Add AN_API_KEY and NEXT_PUBLIC_CONVEX_URL to .env.local
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## What It Does
+## Code walkthrough
+
+### Agent definition (`agents/note-taker.ts`)
+
+Uses Claude Sonnet with 6 CRUD tools. The system prompt instructs the agent to always search notes before claiming it has no information:
+
+```typescript
+import { agent } from "@an-sdk/agent"
+import { noteTools } from "./lib/tools"
+
+export default agent({
+  model: "claude-sonnet-4-6",
+  runtime: "claude-code",
+  permissionMode: "bypassPermissions",
+  maxTurns: 10,
+  systemPrompt: `You are a personal notebook assistant. You help users save, find, update, and delete notes.
+
+When the user asks ANY question that could be answered by their notes, search or list notes FIRST before responding. Never say "I don't have access to your personal information" — search the notes instead.
+
+Refer to your skills for detailed behavior rules and response formatting.`,
+  tools: noteTools,
+  onFinish: async ({ cost, duration, turns }) => {
+    console.log(`[note-taker] Done: ${turns} turns, ${duration}ms, $${cost.toFixed(4)}`)
+  },
+})
+```
+
+Each tool in `agents/lib/tools.ts` uses Zod schemas for input validation and calls Convex HTTP endpoints via helpers in `agents/lib/convex.ts`.
+
+## How it works
+
+- **CRUD tools** — the 6 tools each call Convex HTTP endpoints. Zod schemas validate every input before execution.
+- **Real-time sync** — the notes panel subscribes to Convex queries using real-time subscriptions. When the agent creates, updates, or deletes a note, the panel updates instantly — no polling.
+- **Skills as config** — behavior rules live in `skills/note-management.md` (tag taxonomy, note categories) and `skills/response-format.md` (output formatting). Edit these to change behavior without recompiling.
+- **Guardrails** — `CLAUDE.md` restricts the agent to its 6 custom tools only, preventing arbitrary shell commands or file operations.
+
+## Try it out
 
 ```
 You: "Remember that project Alpha demo is Tuesday at 2pm"
@@ -52,54 +116,6 @@ Agent: Updated "Project Alpha Demo" — deadline changed to Wednesday
 You: "Delete the note about Alpha"
 Agent: Deleted "Project Alpha Demo"
 ```
-
-## Project Structure
-
-```
-note-taker/
-├── agents/
-│   ├── note-taker.ts       # Agent config (prompt, model, tool wiring)
-│   └── lib/
-│       ├── tools.ts         # 6 note CRUD tools with Zod schemas
-│       ├── convex.ts        # Convex HTTP client helpers
-│       └── env.ts           # Env loading (local + sandbox)
-├── skills/
-│   ├── note-management.md   # Behavior rules, tag taxonomy
-│   └── response-format.md   # Output formatting rules
-├── app/
-│   ├── api/
-│   │   ├── an/token/route.ts    # Token exchange (API key stays server-side)
-│   │   ├── an/sandbox/route.ts  # Sandbox creation/caching
-│   │   ├── an/threads/route.ts  # Thread management
-│   │   └── notes/route.ts       # REST API for notes (optional)
-│   ├── components/
-│   │   ├── thread-sidebar.tsx    # Thread navigation
-│   │   ├── notes-panel.tsx       # Real-time notes display (Convex subscriptions)
-│   │   └── note-tool-renderers.tsx  # Custom tool call visualization
-│   ├── page.tsx             # Main layout: sidebar + chat + notes panel
-│   ├── layout.tsx
-│   ├── convex-provider.tsx  # Convex React provider
-│   └── globals.css
-├── convex/
-│   ├── schema.ts            # Database schema (notes table)
-│   └── notes.ts             # Queries and mutations
-├── CLAUDE.md                # Agent guardrails
-├── .env.example
-└── package.json
-```
-
-## How The Pieces Fit Together
-
-| Piece | File | What it does |
-|-------|------|--------------|
-| **Agent** | `agents/note-taker.ts` | Defines model, tools, system prompt, lifecycle hooks |
-| **Tools** | `agents/lib/tools.ts` | 6 note CRUD tools with Zod schemas |
-| **Skills** | `skills/*.md` | Domain knowledge — behavior rules and formatting |
-| **Guardrails** | `CLAUDE.md` | Restricts agent to its 6 custom tools |
-| **Convex** | `convex/` | Database schema and server functions |
-| **UI** | `app/page.tsx` | Three-panel layout: threads + chat + notes |
-
-Skills are markdown files, not code. Change how the agent categorizes notes or formats responses by editing markdown — no recompile needed.
 
 ## Customization
 
@@ -128,6 +144,41 @@ Edit `app/page.tsx`. The three-panel layout uses Tailwind flex:
 - Chat: `flex-1`
 - Notes panel: `w-80`
 
+## Project structure
+
+```
+note-taker/
+├── agents/
+│   ├── note-taker.ts       # Agent config (prompt, model, tool wiring)
+│   └── lib/
+│       ├── tools.ts         # 6 note CRUD tools with Zod schemas
+│       ├── convex.ts        # Convex HTTP client helpers
+│       └── env.ts           # Env loading (local + sandbox)
+├── skills/
+│   ├── note-management.md   # Behavior rules, tag taxonomy
+│   └── response-format.md   # Output formatting rules
+├── app/
+│   ├── api/
+│   │   ├── an/token/route.ts    # Token exchange
+│   │   ├── an/sandbox/route.ts  # Sandbox creation/caching
+│   │   ├── an/threads/route.ts  # Thread management
+│   │   └── notes/route.ts       # REST API for notes (optional)
+│   ├── components/
+│   │   ├── thread-sidebar.tsx    # Thread navigation
+│   │   ├── notes-panel.tsx       # Real-time notes display (Convex subscriptions)
+│   │   └── note-tool-renderers.tsx  # Custom tool call visualization
+│   ├── page.tsx             # Main layout: sidebar + chat + notes panel
+│   ├── layout.tsx
+│   ├── convex-provider.tsx  # Convex React provider
+│   └── globals.css
+├── convex/
+│   ├── schema.ts            # Database schema (notes table)
+│   └── notes.ts             # Queries and mutations
+├── CLAUDE.md                # Agent guardrails
+├── .env.example
+└── package.json
+```
+
 ## Commands
 
 ```bash
@@ -140,9 +191,9 @@ npm run deploy       # Deploy agent to An
 npm run typecheck    # TypeScript type checking
 ```
 
-## Learn More
+## Next steps
 
-- [An Documentation](https://an.dev/docs)
-- [An SDK Reference](https://an.dev/docs/api-reference)
+- Learn more about skills — see [Skills](https://an.dev/an/docs/skills)
+- Learn about agent configuration — see [Build & Deploy](https://an.dev/an/docs/agent-projects)
+- [An Documentation](https://an.dev/an/docs)
 - [Convex Documentation](https://docs.convex.dev)
-- [An Dashboard](https://an.dev/dashboard)

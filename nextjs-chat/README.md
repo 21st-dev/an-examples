@@ -1,6 +1,132 @@
 # An SDK — Next.js Chat Example
 
-Full-stack example: deploy a Claude Code agent and connect it to a chat UI.
+Deploy a Claude Code agent with a custom web search tool and connect it to a streaming chat UI.
+
+## What you'll build
+
+A full-stack Next.js app with a streaming chat UI powered by a deployed Claude Code agent. The agent has a custom `search_docs` tool that queries DuckDuckGo for documentation and code references.
+
+- **Real-time streaming** of Claude's responses via SSE
+- **Tool calls rendered live** — Bash, Read, Write, Edit, Grep, and your custom tools
+- **File diffs, search results, and terminal output** displayed inline
+- **Custom `search_docs` tool** fetching web results via DuckDuckGo
+
+## Prerequisites
+
+- Node.js 18+
+- An [An](https://an.dev) account with an API key
+
+## Environment variables
+
+| Variable | Where | Description |
+|----------|-------|-------------|
+| `AN_API_KEY` | `.env.local` | Server-side API key (`an_sk_`) for token exchange |
+
+## Quick start
+
+### 1. Clone and install
+
+```bash
+git clone https://github.com/21st-dev/an-examples.git
+cd an-examples/nextjs-chat
+npm install
+```
+
+### 2. Deploy the agent
+
+```bash
+npx @an-sdk/cli login    # paste your an_sk_ API key
+npx @an-sdk/cli deploy   # deploys agents/ to An cloud
+```
+
+The CLI bundles everything in `agents/` and deploys it to An cloud. Your agent gets a unique ID you can reference from the client.
+
+### 3. Configure and run
+
+```bash
+cp .env.example .env.local
+# Add your AN_API_KEY to .env.local
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+## Code walkthrough
+
+### Agent definition (`agents/my-agent.ts`)
+
+The agent uses Claude Sonnet with a custom `search_docs` tool that hits the DuckDuckGo instant-answer API:
+
+```typescript
+import { agent, tool } from "@an-sdk/agent"
+import { z } from "zod"
+
+export default agent({
+  model: "claude-sonnet-4-6",
+  systemPrompt: "You are a helpful coding assistant.",
+  tools: {
+    search_docs: tool({
+      description: "Search documentation or code references on the web",
+      inputSchema: z.object({
+        query: z.string().describe("Search query"),
+      }),
+      execute: async ({ query }) => {
+        const { execSync } = await import("child_process")
+        try {
+          const result = execSync(
+            `curl -s "https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json"`,
+            { encoding: "utf-8", timeout: 10_000 },
+          )
+          const data = JSON.parse(result)
+          const text =
+            data.AbstractText ||
+            data.RelatedTopics?.slice(0, 3)
+              .map((t: any) => t.Text)
+              .join("\n") ||
+            "No results found."
+          return { content: [{ type: "text", text }] }
+        } catch {
+          return {
+            content: [{ type: "text", text: "Search failed." }],
+            isError: true,
+          }
+        }
+      },
+    }),
+  },
+  onFinish: async ({ cost, duration, turns }) => {
+    console.log(`[agent] Done: ${turns} turns, ${duration}ms, $${cost.toFixed(4)}`)
+  },
+})
+```
+
+### Token handler (`app/api/an/token/route.ts`)
+
+Exchanges your server-side `an_sk_` key for a short-lived JWT. The client never sees your API key:
+
+```typescript
+import { createAnTokenHandler } from "@an-sdk/nextjs/server"
+
+export const POST = createAnTokenHandler({
+  apiKey: process.env.AN_API_KEY!,
+})
+```
+
+### Chat UI (`app/page.tsx`)
+
+Uses `createAnChat()` to create a chat session, then renders the conversation with `<AnAgentChat>`:
+
+- **Token exchange** — the Next.js API route at `/api/an/token` exchanges your key for a JWT
+- **Chat session** — `createAnChat()` connects to the deployed agent via the relay
+- **Streaming** — responses stream in real time, tool calls render live as they execute
+
+## Try it out
+
+- "Search for the latest Next.js middleware docs"
+- "Find examples of using Zod with tRPC"
+- "What is the recommended way to handle auth in Next.js 15?"
+
+## Project structure
 
 ```
 nextjs-chat/
@@ -11,6 +137,8 @@ nextjs-chat/
 │   │   ├── sandbox/route.ts   # Creates/caches agent sandboxes
 │   │   ├── threads/route.ts   # Creates/lists chat threads
 │   │   └── token/route.ts     # Token handler (server-side)
+│   ├── components/
+│   │   └── thread-sidebar.tsx # Thread navigation
 │   ├── page.tsx               # Chat UI (client-side)
 │   ├── layout.tsx
 │   └── globals.css
@@ -18,38 +146,8 @@ nextjs-chat/
 └── package.json
 ```
 
-## Setup
+## Next steps
 
-### 1. Deploy the agent
-
-```bash
-npm install
-npx an login          # paste your an_sk_ API key
-npx an deploy         # deploys an/agent.ts to An cloud
-```
-
-### 2. Run the app
-
-```bash
-cp .env.example .env.local
-# Edit .env.local — add your AN_API_KEY
-
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000).
-
-## How it works
-
-**Agent** (`agents/my-agent.ts`) — defines what the agent can do. Uses Claude Sonnet with a custom `search_docs` tool. Deployed to An cloud with `an deploy`.
-
-**Token handler** (`app/api/an/token/route.ts`) — exchanges your server-side `an_sk_` key for a short-lived JWT. The client never sees your API key.
-
-**Chat UI** (`app/page.tsx`) — uses `createAnChat()` to connect to the deployed agent via the relay, and `<AnAgentChat>` to render the full chat interface with tool call visualization.
-
-## What you'll see
-
-- Real-time streaming of Claude's responses
-- Tool calls rendered live (Bash, Read, Write, Edit, Grep, etc.)
-- File diffs, search results, and terminal output
-- The custom `search_docs` tool fetching web results
+- Add more tools to the agent — see [Build & Deploy](https://an.dev/an/docs/agent-projects)
+- Customize the chat theme — see [Themes](https://an.dev/an/docs/customization)
+- Add behavior rules with skills — see [Skills](https://an.dev/an/docs/skills)

@@ -3,11 +3,28 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useChat } from "@ai-sdk/react"
 import { createAnChat, AnAgentChat } from "@an-sdk/nextjs"
+import type { CustomToolRendererProps } from "@an-sdk/react"
 import type { Chat } from "@ai-sdk/react"
 import type { UIMessage } from "ai"
 import type { ThreadItem } from "./types"
 import { ThreadSidebar } from "./components/thread-sidebar"
 import "@an-sdk/react/styles.css"
+
+function TestToolRenderer({ name, status, output }: CustomToolRendererProps) {
+  return (
+    <div style={{ padding: "8px 12px", background: "#1a1a2e", borderRadius: 8, fontSize: 13 }}>
+      <div style={{ color: "#f59e0b", fontWeight: "bold", marginBottom: 4 }}>IT'S A TESTING TOOL</div>
+      <strong>Custom Tool: {name}</strong>
+      {status === "pending" && <span style={{ marginLeft: 8, color: "#facc15" }}>Running...</span>}
+      {status === "success" && (
+        <span style={{ marginLeft: 8, color: "#4ade80" }}>
+          Result: {typeof output === "string" ? output : JSON.stringify(output)}
+        </span>
+      )}
+      {status === "error" && <span style={{ marginLeft: 8, color: "#f87171" }}>Error</span>}
+    </div>
+  )
+}
 
 function ChatPanel({ chat }: { chat: Chat<UIMessage> }) {
   const { messages, sendMessage, status, stop, error } = useChat({ chat })
@@ -19,6 +36,7 @@ function ChatPanel({ chat }: { chat: Chat<UIMessage> }) {
       status={status}
       onStop={stop}
       error={error ?? undefined}
+      toolRenderers={{ test: TestToolRenderer }}
     />
   )
 }
@@ -48,19 +66,41 @@ export default function Home() {
 
     async function init() {
       try {
-        const sbRes = await fetch("/api/an/sandbox", { method: "POST" })
-        if (!sbRes.ok) throw new Error(`Failed to create sandbox: ${sbRes.status}`)
-        const { sandboxId: sbId } = await sbRes.json()
+        console.log("[client] Initializing...")
+
+        // Check URL for existing sandboxId
+        const params = new URLSearchParams(window.location.search)
+        let sbId = params.get("sandboxId")
+
+        if (sbId) {
+          console.log(`[client] Found sandboxId in URL: ${sbId}`)
+        } else {
+          console.log("[client] No sandboxId in URL, creating new sandbox...")
+          const sbRes = await fetch("/api/an/sandbox", { method: "POST" })
+          if (!sbRes.ok) throw new Error(`Failed to create sandbox: ${sbRes.status}`)
+          const data = await sbRes.json()
+          sbId = data.sandboxId
+          console.log(`[client] Got sandboxId: ${sbId}`)
+
+          // Put sandboxId in URL so reloads reuse it
+          const url = new URL(window.location.href)
+          url.searchParams.set("sandboxId", sbId!)
+          window.history.replaceState({}, "", url.toString())
+        }
+
         setSandboxId(sbId)
 
         const threadsRes = await fetch(`/api/an/threads?sandboxId=${sbId}`)
         if (!threadsRes.ok) throw new Error(`Failed to fetch threads: ${threadsRes.status}`)
         const existingThreads: ThreadItem[] = await threadsRes.json()
+        console.log(`[client] Fetched ${existingThreads.length} existing threads:`, existingThreads)
 
         if (existingThreads.length > 0) {
           setThreads(existingThreads)
           setActiveThreadId(existingThreads[0]!.id)
+          console.log(`[client] Reusing existing threads, active: ${existingThreads[0]!.id}`)
         } else {
+          console.log("[client] No existing threads, creating first one...")
           const newRes = await fetch("/api/an/threads", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -68,10 +108,12 @@ export default function Home() {
           })
           if (!newRes.ok) throw new Error(`Failed to create thread: ${newRes.status}`)
           const newThread: ThreadItem = await newRes.json()
+          console.log(`[client] Created thread: ${newThread.id}`)
           setThreads([newThread])
           setActiveThreadId(newThread.id)
         }
       } catch (err) {
+        console.error("[client] Init failed:", err)
         setError(err instanceof Error ? err.message : "Failed to initialize")
       }
     }

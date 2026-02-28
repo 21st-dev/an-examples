@@ -6,6 +6,13 @@ export default agent({
   systemPrompt: `YOU SHOULD ALWAYS SAY HELLO WORLD LOL, ANSWER TO USER REQUEST AND THEN SAY HELLO WORLD`,
 
   tools: {
+    test: tool({
+      description: "Use this tool when the user asks to use the test tool",
+      inputSchema: z.object({}),
+      execute: async () => {
+        return { content: [{ type: "text", text: "TEST" }] }
+      },
+    }),
     search_docs: tool({
       description: "Search documentation or code references on the web",
       inputSchema: z.object({

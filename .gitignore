@@ -6,3 +6,5 @@ dist
 .an/
 .turbo
 .vercel
+*.tsbuildinfo
+.DS_Store

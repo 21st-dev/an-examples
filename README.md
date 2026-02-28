@@ -4,24 +4,31 @@ Example projects for the [AN SDK](https://an.dev) — deploy AI coding agents an
 
 ## Examples
 
-| Example | Description |
-|---------|-------------|
-| [`nextjs`](./nextjs) | Next.js app — agent definition + token handler + chat UI |
+| Example | Description | Stack |
+|---------|-------------|-------|
+| [`nextjs-chat`](./nextjs-chat) | Chat UI connected to a deployed agent with web search | Next.js, @an-sdk |
+| [`nextjs-fill-form`](./nextjs-fill-form) | AI-powered form filling with tabbed forms + chat | Next.js, React Hook Form, @an-sdk |
+| [`email-agent`](./email-agent) | Email operations copilot — send, read inbox, auto-reply via AgentMail | Next.js, AgentMail, @an-sdk |
+| [`note-taker`](./note-taker) | AI notebook assistant with persistent notes via Convex | Next.js, Convex, @an-sdk |
+| [`monitor-agent`](./monitor-agent) | Service health monitoring with Slack alerts | Node.js CLI, @an-sdk |
 
 ## Quick Start
 
+Each example is self-contained. Pick one, navigate to its directory, and follow its README:
+
 ```bash
-cd nextjs
-npm install
+cd nextjs-chat
+pnpm install
 npx an login
 npx an deploy
 cp .env.example .env.local
-npm run dev
+pnpm dev
 ```
 
 ## Links
 
 - [an.dev](https://an.dev)
+- [AN Documentation](https://an.dev/docs)
 - [@an-sdk/agent](https://www.npmjs.com/package/@an-sdk/agent)
 - [@an-sdk/react](https://www.npmjs.com/package/@an-sdk/react)
 - [@an-sdk/nextjs](https://www.npmjs.com/package/@an-sdk/nextjs)

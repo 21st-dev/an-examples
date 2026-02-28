@@ -1,0 +1,22 @@
+{
+  "name": "monitor-agent",
+  "description": "Status monitoring agent — checks service health and sends Slack alerts on changes",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "deploy": "an deploy",
+    "login": "an login",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@an-sdk/agent": "^0.0.3",
+    "zod": "^3.24"
+  },
+  "devDependencies": {
+    "@an-sdk/cli": "^0.0.8",
+    "@types/node": "^25.3.2"
+  }
+}

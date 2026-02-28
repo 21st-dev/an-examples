@@ -68,24 +68,18 @@ export default function Home() {
       try {
         console.log("[client] Initializing...")
 
-        // Check URL for existing sandboxId
-        const params = new URLSearchParams(window.location.search)
-        let sbId = params.get("sandboxId")
+        let sbId = localStorage.getItem("an_sandbox_id")
 
         if (sbId) {
-          console.log(`[client] Found sandboxId in URL: ${sbId}`)
+          console.log(`[client] Found sandboxId in localStorage: ${sbId}`)
         } else {
-          console.log("[client] No sandboxId in URL, creating new sandbox...")
+          console.log("[client] No sandboxId found, creating new sandbox...")
           const sbRes = await fetch("/api/an/sandbox", { method: "POST" })
           if (!sbRes.ok) throw new Error(`Failed to create sandbox: ${sbRes.status}`)
           const data = await sbRes.json()
           sbId = data.sandboxId
           console.log(`[client] Got sandboxId: ${sbId}`)
-
-          // Put sandboxId in URL so reloads reuse it
-          const url = new URL(window.location.href)
-          url.searchParams.set("sandboxId", sbId!)
-          window.history.replaceState({}, "", url.toString())
+          localStorage.setItem("an_sandbox_id", sbId!)
         }
 
         setSandboxId(sbId)
@@ -95,10 +89,15 @@ export default function Home() {
         const existingThreads: ThreadItem[] = await threadsRes.json()
         console.log(`[client] Fetched ${existingThreads.length} existing threads:`, existingThreads)
 
+        const savedThreadId = localStorage.getItem("an_thread_id")
+
         if (existingThreads.length > 0) {
           setThreads(existingThreads)
-          setActiveThreadId(existingThreads[0]!.id)
-          console.log(`[client] Reusing existing threads, active: ${existingThreads[0]!.id}`)
+          const threadId = existingThreads.find((t) => t.id === savedThreadId)
+            ? savedThreadId!
+            : existingThreads[0]!.id
+          setActiveThreadId(threadId)
+          localStorage.setItem("an_thread_id", threadId)
         } else {
           console.log("[client] No existing threads, creating first one...")
           const newRes = await fetch("/api/an/threads", {
@@ -111,6 +110,7 @@ export default function Home() {
           console.log(`[client] Created thread: ${newThread.id}`)
           setThreads([newThread])
           setActiveThreadId(newThread.id)
+          localStorage.setItem("an_thread_id", newThread.id)
         }
       } catch (err) {
         console.error("[client] Init failed:", err)
@@ -134,6 +134,7 @@ export default function Home() {
       const thread: ThreadItem = await res.json()
       setThreads((prev) => [thread, ...prev])
       setActiveThreadId(thread.id)
+      localStorage.setItem("an_thread_id", thread.id)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create thread")
     }
@@ -141,6 +142,7 @@ export default function Home() {
 
   const handleSelectThread = useCallback((threadId: string) => {
     setActiveThreadId(threadId)
+    localStorage.setItem("an_thread_id", threadId)
   }, [])
 
   if (error) {

@@ -10,11 +10,10 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    console.log(`[threads] Listing threads for sandboxId: ${sandboxId}`)
     const threads = await an.threads.list({ sandboxId })
     return NextResponse.json(threads)
   } catch (error) {
-    console.error("[threads] Failed to list threads:", error)
+    console.error("[threads] Failed to list:", error)
     return NextResponse.json(
       { error: "Failed to list threads" },
       { status: 500 },
@@ -29,12 +28,10 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    console.log(`[threads] Creating thread "${name}" in sandboxId: ${sandboxId}`)
     const thread = await an.threads.create({ sandboxId, name })
-    console.log(`[threads] Created thread: ${thread.id}`)
     return NextResponse.json(thread)
   } catch (error) {
-    console.error("[threads] Failed to create thread:", error)
+    console.error("[threads] Failed to create:", error)
     return NextResponse.json(
       { error: "Failed to create thread" },
       { status: 500 },

@@ -63,20 +63,14 @@ export default function Home() {
 
     async function init() {
       try {
-        console.log("[client] Initializing...")
-
         const params = new URLSearchParams(window.location.search)
         let sbId = params.get("sandboxId")
 
-        if (sbId) {
-          console.log(`[client] Found sandboxId in URL: ${sbId}`)
-        } else {
-          console.log("[client] No sandboxId in URL, creating new sandbox...")
+        if (!sbId) {
           const sbRes = await fetch("/api/an/sandbox", { method: "POST" })
           if (!sbRes.ok) throw new Error(`Failed to create sandbox: ${sbRes.status}`)
           const data = await sbRes.json()
           sbId = data.sandboxId
-          console.log(`[client] Got sandboxId: ${sbId}`)
 
           const url = new URL(window.location.href)
           url.searchParams.set("sandboxId", sbId!)
@@ -88,13 +82,11 @@ export default function Home() {
         const threadsRes = await fetch(`/api/an/threads?sandboxId=${sbId}`)
         if (!threadsRes.ok) throw new Error(`Failed to fetch threads: ${threadsRes.status}`)
         const existingThreads: ThreadItem[] = await threadsRes.json()
-        console.log(`[client] Fetched ${existingThreads.length} existing threads`)
 
         if (existingThreads.length > 0) {
           setThreads(existingThreads)
           setActiveThreadId(existingThreads[0]!.id)
         } else {
-          console.log("[client] No existing threads, creating first one...")
           const newRes = await fetch("/api/an/threads", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -102,12 +94,11 @@ export default function Home() {
           })
           if (!newRes.ok) throw new Error(`Failed to create thread: ${newRes.status}`)
           const newThread: ThreadItem = await newRes.json()
-          console.log(`[client] Created thread: ${newThread.id}`)
           setThreads([newThread])
           setActiveThreadId(newThread.id)
         }
       } catch (err) {
-        console.error("[client] Init failed:", err)
+        console.error("[note-taker] Init failed:", err)
         setError(err instanceof Error ? err.message : "Failed to initialize")
       }
     }

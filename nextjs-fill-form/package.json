@@ -10,6 +10,7 @@
     "@ai-sdk/react": "^2.0.0",
     "@an-sdk/agent": "^0.0.3",
     "@an-sdk/nextjs": "^0.0.5",
+    "@an-sdk/node": "^0.0.4",
     "@an-sdk/react": "^0.0.3",
     "ai": "^5.0.0",
     "next": "^15.3.0",

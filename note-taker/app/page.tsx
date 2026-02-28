@@ -63,18 +63,14 @@ export default function Home() {
 
     async function init() {
       try {
-        const params = new URLSearchParams(window.location.search)
-        let sbId = params.get("sandboxId")
+        let sbId = localStorage.getItem("an_sandbox_id")
 
         if (!sbId) {
           const sbRes = await fetch("/api/an/sandbox", { method: "POST" })
           if (!sbRes.ok) throw new Error(`Failed to create sandbox: ${sbRes.status}`)
           const data = await sbRes.json()
           sbId = data.sandboxId
-
-          const url = new URL(window.location.href)
-          url.searchParams.set("sandboxId", sbId!)
-          window.history.replaceState({}, "", url.toString())
+          localStorage.setItem("an_sandbox_id", sbId!)
         }
 
         setSandboxId(sbId)
@@ -83,9 +79,15 @@ export default function Home() {
         if (!threadsRes.ok) throw new Error(`Failed to fetch threads: ${threadsRes.status}`)
         const existingThreads: ThreadItem[] = await threadsRes.json()
 
+        const savedThreadId = localStorage.getItem("an_thread_id")
+
         if (existingThreads.length > 0) {
           setThreads(existingThreads)
-          setActiveThreadId(existingThreads[0]!.id)
+          const threadId = existingThreads.find((t) => t.id === savedThreadId)
+            ? savedThreadId!
+            : existingThreads[0]!.id
+          setActiveThreadId(threadId)
+          localStorage.setItem("an_thread_id", threadId)
         } else {
           const newRes = await fetch("/api/an/threads", {
             method: "POST",
@@ -96,6 +98,7 @@ export default function Home() {
           const newThread: ThreadItem = await newRes.json()
           setThreads([newThread])
           setActiveThreadId(newThread.id)
+          localStorage.setItem("an_thread_id", newThread.id)
         }
       } catch (err) {
         console.error("[note-taker] Init failed:", err)
@@ -119,6 +122,7 @@ export default function Home() {
       const thread: ThreadItem = await res.json()
       setThreads((prev) => [thread, ...prev])
       setActiveThreadId(thread.id)
+      localStorage.setItem("an_thread_id", thread.id)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create thread")
     }
@@ -126,6 +130,7 @@ export default function Home() {
 
   const handleSelectThread = useCallback((threadId: string) => {
     setActiveThreadId(threadId)
+    localStorage.setItem("an_thread_id", threadId)
   }, [])
 
   if (error) {

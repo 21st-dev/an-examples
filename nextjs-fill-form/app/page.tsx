@@ -3,14 +3,10 @@
 import { useChat } from "@ai-sdk/react"
 import { AnAgentChat, createAnChat } from "@an-sdk/nextjs"
 import "@an-sdk/react/styles.css"
+import type { Chat } from "@ai-sdk/react"
 import type { UIMessage } from "ai"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
-
-const chat = createAnChat({
-  agent: "form-agent",
-  tokenUrl: "/api/an/token",
-})
 
 type FormId = "profile" | "order" | "support"
 
@@ -245,7 +241,7 @@ function asFillFormPart(part: unknown): {
   }
 }
 
-export default function Home() {
+function FormAgent({ chat }: { chat: Chat<UIMessage> }) {
   const [activeTab, setActiveTab] = useState<FormId>("profile")
   const lastAppliedToolCallId = useRef<string | null>(null)
 
@@ -541,4 +537,93 @@ export default function Home() {
       </section>
     </main>
   )
+}
+
+export default function Home() {
+  const [sandboxId, setSandboxId] = useState<string | null>(null)
+  const [threadId, setThreadId] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const initRef = useRef(false)
+
+  const chat = useMemo(() => {
+    if (!sandboxId || !threadId) return null
+    return createAnChat({
+      agent: "form-agent",
+      tokenUrl: "/api/an/token",
+      sandboxId,
+      threadId,
+    })
+  }, [sandboxId, threadId])
+
+  useEffect(() => {
+    if (initRef.current) return
+    initRef.current = true
+
+    async function init() {
+      try {
+        let sbId = localStorage.getItem("an_sandbox_id")
+
+        if (!sbId) {
+          const sbRes = await fetch("/api/an/sandbox", { method: "POST" })
+          if (!sbRes.ok) throw new Error(`Failed to create sandbox: ${sbRes.status}`)
+          const data = await sbRes.json()
+          sbId = data.sandboxId
+          localStorage.setItem("an_sandbox_id", sbId!)
+        }
+
+        setSandboxId(sbId)
+
+        let thId = localStorage.getItem("an_thread_id")
+
+        if (!thId) {
+          const thRes = await fetch("/api/an/threads", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ sandboxId: sbId, name: "Chat" }),
+          })
+          if (!thRes.ok) throw new Error(`Failed to create thread: ${thRes.status}`)
+          const data = await thRes.json()
+          thId = data.id
+          localStorage.setItem("an_thread_id", thId!)
+        }
+
+        setThreadId(thId)
+      } catch (err) {
+        console.error("[client] Init failed:", err)
+        setError(err instanceof Error ? err.message : "Failed to initialize")
+      }
+    }
+
+    init()
+  }, [])
+
+  if (error) {
+    return (
+      <main className="h-screen flex items-center justify-center bg-neutral-950 text-neutral-100">
+        <div className="text-center space-y-2">
+          <p className="text-red-400">{error}</p>
+          <button
+            onClick={() => {
+              setError(null)
+              initRef.current = false
+              window.location.reload()
+            }}
+            className="text-sm text-neutral-400 hover:text-white underline"
+          >
+            Retry
+          </button>
+        </div>
+      </main>
+    )
+  }
+
+  if (!chat) {
+    return (
+      <main className="h-screen flex items-center justify-center bg-neutral-950 text-neutral-500">
+        Loading...
+      </main>
+    )
+  }
+
+  return <FormAgent chat={chat} />
 }

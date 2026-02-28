@@ -1,0 +1,17 @@
+{
+  "name": "sandbox-management-example",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "run": "tsx run.ts"
+  },
+  "dependencies": {
+    "@an-sdk/agent": "^0.0.4",
+    "@an-sdk/node": "^0.0.2",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

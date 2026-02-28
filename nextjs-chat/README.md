@@ -1,4 +1,4 @@
-# AN SDK — Next.js Chat Example
+# An SDK — Next.js Chat Example
 
 Full-stack example: deploy a Claude Code agent and connect it to a chat UI.
 
@@ -25,7 +25,7 @@ nextjs-chat/
 ```bash
 npm install
 npx an login          # paste your an_sk_ API key
-npx an deploy         # deploys an/agent.ts to AN cloud
+npx an deploy         # deploys an/agent.ts to An cloud
 ```
 
 ### 2. Run the app
@@ -41,7 +41,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## How it works
 
-**Agent** (`agents/my-agent.ts`) — defines what the agent can do. Uses Claude Sonnet with a custom `search_docs` tool. Deployed to AN cloud with `an deploy`.
+**Agent** (`agents/my-agent.ts`) — defines what the agent can do. Uses Claude Sonnet with a custom `search_docs` tool. Deployed to An cloud with `an deploy`.
 
 **Token handler** (`app/api/an/token/route.ts`) — exchanges your server-side `an_sk_` key for a short-lived JWT. The client never sees your API key.
 

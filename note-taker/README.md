@@ -1,6 +1,6 @@
 # Note Taker Agent
 
-An AI notebook assistant that saves, searches, updates, and deletes notes — built with [AN SDK](https://an.dev) and [Convex](https://convex.dev).
+An AI notebook assistant that saves, searches, updates, and deletes notes — built with [An SDK](https://an.dev) and [Convex](https://convex.dev).
 
 Chat naturally. Notes persist across sessions in Convex.
 
@@ -23,12 +23,12 @@ cp .env.example .env.local
 #   NEXT_PUBLIC_CONVEX_URL=https://your-project.convex.cloud
 #   CONVEX_URL=https://your-project.convex.cloud
 
-# 4. Login to AN and deploy the agent
+# 4. Login to An and deploy the agent
 npm run login
 npm run deploy
 
-# 5. Set CONVEX_URL in AN dashboard env vars
-# AN dashboard -> your agent -> Environment Variables
+# 5. Set CONVEX_URL in An dashboard env vars
+# An dashboard -> your agent -> Environment Variables
 # Add: CONVEX_URL=https://your-project.convex.cloud
 
 # 6. Run
@@ -135,14 +135,14 @@ npm run dev          # Run Next.js + Convex dev servers
 npm run dev:next     # Run Next.js only
 npm run dev:convex   # Run Convex only
 npm run build        # Production build
-npm run login        # Authenticate with AN
-npm run deploy       # Deploy agent to AN
+npm run login        # Authenticate with An
+npm run deploy       # Deploy agent to An
 npm run typecheck    # TypeScript type checking
 ```
 
 ## Learn More
 
-- [AN Documentation](https://an.dev/docs)
-- [AN SDK Reference](https://an.dev/docs/api-reference)
+- [An Documentation](https://an.dev/docs)
+- [An SDK Reference](https://an.dev/docs/api-reference)
 - [Convex Documentation](https://docs.convex.dev)
-- [AN Dashboard](https://an.dev/dashboard)
+- [An Dashboard](https://an.dev/dashboard)

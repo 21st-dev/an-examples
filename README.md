@@ -1,6 +1,6 @@
-# AN SDK Examples
+# An SDK Examples
 
-Example projects for the [AN SDK](https://an.dev) — deploy AI coding agents and connect them to your app.
+Example projects for the [An SDK](https://an.dev) — deploy AI coding agents and connect them to your app.
 
 ## Examples
 
@@ -28,7 +28,7 @@ pnpm dev
 ## Links
 
 - [an.dev](https://an.dev)
-- [AN Documentation](https://an.dev/docs)
+- [An Documentation](https://an.dev/docs)
 - [@an-sdk/agent](https://www.npmjs.com/package/@an-sdk/agent)
 - [@an-sdk/react](https://www.npmjs.com/package/@an-sdk/react)
 - [@an-sdk/nextjs](https://www.npmjs.com/package/@an-sdk/nextjs)

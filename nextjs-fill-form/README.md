@@ -1,6 +1,6 @@
-# AN SDK — Next.js Fill Form Example
+# An SDK — Next.js Fill Form Example
 
-Minimal full-stack example: a tabbed form UI on the left and AN chat on the right.
+Minimal full-stack example: a tabbed form UI on the left and An chat on the right.
 
 ```
 nextjs-fill-form/

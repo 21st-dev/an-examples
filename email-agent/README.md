@@ -1,6 +1,6 @@
-# AN SDK — Email Agent Boilerplate
+# An SDK — Email Agent Boilerplate
 
-Next.js + AN + AgentMail starter for:
+Next.js + An + AgentMail starter for:
 - Sending intro emails
 - Reading inbox messages
 - Auto-replying to inbound emails

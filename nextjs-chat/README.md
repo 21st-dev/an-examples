@@ -1,13 +1,16 @@
-# AN SDK — Next.js Example
+# AN SDK — Next.js Chat Example
 
 Full-stack example: deploy a Claude Code agent and connect it to a chat UI.
 
 ```
-nextjs/
-├── an/
-│   └── agent.ts              # Agent definition (deploy this)
+nextjs-chat/
+├── agents/
+│   └── my-agent.ts            # Agent definition (deploy this)
 ├── app/
-│   ├── api/an/token/route.ts  # Token handler (server-side)
+│   ├── api/an/
+│   │   ├── sandbox/route.ts   # Creates/caches agent sandboxes
+│   │   ├── threads/route.ts   # Creates/lists chat threads
+│   │   └── token/route.ts     # Token handler (server-side)
 │   ├── page.tsx               # Chat UI (client-side)
 │   ├── layout.tsx
 │   └── globals.css
@@ -38,7 +41,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## How it works
 
-**Agent** (`an/agent.ts`) — defines what the agent can do. Uses Claude Sonnet with a custom `search_docs` tool. Deployed to AN cloud with `an deploy`.
+**Agent** (`agents/my-agent.ts`) — defines what the agent can do. Uses Claude Sonnet with a custom `search_docs` tool. Deployed to AN cloud with `an deploy`.
 
 **Token handler** (`app/api/an/token/route.ts`) — exchanges your server-side `an_sk_` key for a short-lived JWT. The client never sees your API key.
 

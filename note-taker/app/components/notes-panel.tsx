@@ -75,9 +75,9 @@ function NotesList() {
   )
 }
 
-export function NotesPanel() {
+export function NotesSidebarContent() {
   return (
-    <aside className="w-80 border-l border-neutral-800 flex flex-col h-full bg-neutral-950">
+    <div className="flex h-full flex-col bg-neutral-950">
       <div className="p-4 border-b border-neutral-800">
         <h2 className="text-sm font-semibold text-neutral-300 uppercase tracking-wider">
           Saved Notes
@@ -96,6 +96,6 @@ export function NotesPanel() {
           </div>
         )}
       </div>
-    </aside>
+    </div>
   )
 }

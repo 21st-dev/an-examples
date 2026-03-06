@@ -7,7 +7,6 @@ import type { Chat } from "@ai-sdk/react"
 import type { UIMessage } from "ai"
 import type { ThreadItem } from "./types"
 import { ThreadSidebar } from "./components/thread-sidebar"
-import { NotesPanel } from "./components/notes-panel"
 import {
   SaveNoteRenderer,
   SearchNotesRenderer,
@@ -96,6 +95,7 @@ export default function Home() {
   const [sandboxId, setSandboxId] = useState<string | null>(null)
   const [threads, setThreads] = useState<ThreadItem[]>([])
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null)
+  const [sidebarView, setSidebarView] = useState<"threads" | "notes">("threads")
   const [error, setError] = useState<string | null>(null)
   const initRef = useRef(false)
 
@@ -202,6 +202,8 @@ export default function Home() {
         activeThreadId={activeThreadId}
         onSelectThread={handleSelectThread}
         onNewThread={handleNewThread}
+        view={sidebarView}
+        onViewChange={setSidebarView}
       />
       <div className="flex-1">
         {sandboxId && activeThreadId ? (
@@ -219,7 +221,6 @@ export default function Home() {
           </div>
         )}
       </div>
-      <NotesPanel />
     </main>
   )
 }

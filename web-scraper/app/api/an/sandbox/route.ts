@@ -2,8 +2,7 @@ import { AnClient } from "@21st-sdk/node"
 import { NextResponse } from "next/server"
 
 const an = new AnClient({ apiKey: process.env.AN_API_KEY! })
-const AGENT_SLUG =
-  process.env.AN_AGENT_SLUG || process.env.NEXT_PUBLIC_AN_AGENT_SLUG || "web-scraper"
+const AGENT_SLUG = "web-scraper"
 
 export async function POST() {
   try {

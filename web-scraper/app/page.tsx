@@ -1,19 +1,19 @@
 "use client"
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { useChat } from "@ai-sdk/react"
-import { createAnChat, AnAgentChat } from "@21st-sdk/nextjs"
+import { AnAgentChat, createAnChat } from "@21st-sdk/nextjs"
+import "@21st-sdk/react/styles.css"
 import type { Chat } from "@ai-sdk/react"
+import { useChat } from "@ai-sdk/react"
 import type { UIMessage } from "ai"
-import type { ThreadItem } from "./types"
-import { ThreadSidebar } from "./components/thread-sidebar"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   BrowserUseExtractRenderer,
   SubmitExtractionRenderer,
 } from "./components/extraction-tool-renderers"
-import "@21st-sdk/react/styles.css"
+import { ThreadSidebar } from "./components/thread-sidebar"
+import type { ThreadItem } from "./types"
 
-const AGENT_SLUG = process.env.NEXT_PUBLIC_AN_AGENT_SLUG || "web-scraper"
+const AGENT_SLUG = "web-scraper"
 
 function ChatPanel({ chat }: { chat: Chat<UIMessage> }) {
   const { messages, sendMessage, status, stop, error } = useChat({ chat })

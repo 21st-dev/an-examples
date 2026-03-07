@@ -153,6 +153,7 @@ def main() -> int:
 
         print(f"Connected to agent: {args.agent}")
         print(f"Sandbox: {sandbox.id}")
+        print(f"Runtime sandbox: {sandbox.sandboxId}")
         print(f"Thread: {thread.id}")
         print("Type /new for a fresh thread or /exit to quit.")
         print()
@@ -196,6 +197,14 @@ def main() -> int:
 
             if assistant_text:
                 messages.append(make_message("assistant", assistant_text))
+
+            try:
+                latest_thread = client.threads.get(sandbox.id, thread.id)
+            except Exception as exc:
+                print(f"warn> failed to refresh thread state: {exc}", file=sys.stderr)
+            else:
+                if isinstance(latest_thread.messages, list):
+                    messages = list(latest_thread.messages)
 
             if metadata:
                 session_id = metadata.get("sessionId")

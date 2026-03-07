@@ -2,6 +2,8 @@
 
 A minimal terminal chat example for the 21st Python SDK. It connects to a deployed agent, creates a sandbox and thread, then streams responses directly in your terminal.
 
+The Python SDK uses Python-style `snake_case` for method arguments, but response objects keep the relay's `camelCase` fields.
+
 ## What you'll build
 
 - **CLI-only chat** with no frontend
@@ -81,7 +83,7 @@ Commands:
    - calls `client.threads.run(...)`
    - reads the SSE stream from `result.response`
    - prints `text-delta` chunks to the terminal
-   - appends the final assistant text back into local history
+   - refreshes the thread from the API and reuses the persisted `messages` array for the next turn
 
 ## Example session
 
@@ -89,6 +91,7 @@ Commands:
 $ python-terminal-chat
 Connected to agent: support-agent
 Sandbox: 1d5f...
+Runtime sandbox: e2b_abc123...
 Thread: 97a1...
 
 you> summarize what this agent can do

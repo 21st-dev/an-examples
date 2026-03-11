@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@21st-sdk/agent':
-        specifier: 0.0.6
-        version: 0.0.6(zod@3.25.76)
+        specifier: 0.0.7
+        version: 0.0.7(zod@3.25.76)
       '@21st-sdk/nextjs':
         specifier: 0.0.10
         version: 0.0.10(@21st-sdk/react@0.2.0(@ai-sdk/react@2.0.139(react@19.2.4)(zod@3.25.76))(@types/react@19.2.14)(ai@5.0.137(zod@3.25.76))(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@ai-sdk/react@2.0.139(react@19.2.4)(zod@3.25.76))(ai@5.0.137(zod@3.25.76))(next@15.5.12(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -66,8 +66,8 @@ importers:
 
 packages:
 
-  '@21st-sdk/agent@0.0.6':
-    resolution: {integrity: sha512-v9UaYjLC2y0Iw2BQeJ5NguWh64DEZU5YNNmyFkeoPKibP2G6XiW5FCrwP2bsN7wnluWFUoHJQsD6hPVlqgEtgg==}
+  '@21st-sdk/agent@0.0.7':
+    resolution: {integrity: sha512-GBGPCyb3KqSycrlPJNhgced57SNEiGYp42c5jTLJ9mGRMd9NvZSL8oir8jHYk39UHfGt11ZMf5XZfDblmAb5XA==}
     peerDependencies:
       zod: '>=3.24'
 
@@ -1227,7 +1227,7 @@ packages:
 
 snapshots:
 
-  '@21st-sdk/agent@0.0.6(zod@3.25.76)':
+  '@21st-sdk/agent@0.0.7(zod@3.25.76)':
     dependencies:
       zod: 3.25.76
 

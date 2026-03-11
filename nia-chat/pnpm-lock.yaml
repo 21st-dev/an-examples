@@ -9,17 +9,17 @@ importers:
   .:
     dependencies:
       '@21st-sdk/agent':
-        specifier: 0.0.7
-        version: 0.0.7(zod@3.25.76)
+        specifier: 0.0.8
+        version: 0.0.8(zod@3.25.76)
       '@21st-sdk/nextjs':
         specifier: 0.0.10
-        version: 0.0.10(@21st-sdk/react@0.2.0(@ai-sdk/react@2.0.139(react@19.2.4)(zod@3.25.76))(@types/react@19.2.14)(ai@5.0.137(zod@3.25.76))(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@ai-sdk/react@2.0.139(react@19.2.4)(zod@3.25.76))(ai@5.0.137(zod@3.25.76))(next@15.5.12(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        version: 0.0.10(@21st-sdk/react@0.2.1(@ai-sdk/react@2.0.139(react@19.2.4)(zod@3.25.76))(@types/react@19.2.14)(ai@5.0.137(zod@3.25.76))(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@ai-sdk/react@2.0.139(react@19.2.4)(zod@3.25.76))(ai@5.0.137(zod@3.25.76))(next@15.5.12(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@21st-sdk/node':
         specifier: 0.0.4
         version: 0.0.4
       '@21st-sdk/react':
-        specifier: 0.2.0
-        version: 0.2.0(@ai-sdk/react@2.0.139(react@19.2.4)(zod@3.25.76))(@types/react@19.2.14)(ai@5.0.137(zod@3.25.76))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        specifier: 0.2.1
+        version: 0.2.1(@ai-sdk/react@2.0.139(react@19.2.4)(zod@3.25.76))(@types/react@19.2.14)(ai@5.0.137(zod@3.25.76))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@ai-sdk/react':
         specifier: ^2.0.0
         version: 2.0.139(react@19.2.4)(zod@3.25.76)
@@ -66,8 +66,8 @@ importers:
 
 packages:
 
-  '@21st-sdk/agent@0.0.7':
-    resolution: {integrity: sha512-GBGPCyb3KqSycrlPJNhgced57SNEiGYp42c5jTLJ9mGRMd9NvZSL8oir8jHYk39UHfGt11ZMf5XZfDblmAb5XA==}
+  '@21st-sdk/agent@0.0.8':
+    resolution: {integrity: sha512-tyFL8iXbMZTBNzBwhUpN0aWmC+JzeMxpXZqDvK9COifijOSux5TjZ9pGdydFwK1ANXQ5aLhBt/K3BomhYUCJnw==}
     peerDependencies:
       zod: '>=3.24'
 
@@ -84,8 +84,8 @@ packages:
   '@21st-sdk/node@0.0.4':
     resolution: {integrity: sha512-qBfqQqEzFwxm6W+hFG5sBmWKF00i5yliU71jCzmLS9CGd7W1xLlBLfLrNPw/+mifvX2rDsy/as3cIuLsanJGdw==}
 
-  '@21st-sdk/react@0.2.0':
-    resolution: {integrity: sha512-ezv/tsYKZawfXNQZ/Kbvy0ddJ5t+Z11cxR637dGYQlLKLCVw2+CUr53mbuyJGsOMHw+6gMi15jduFPHGqZ+PDg==}
+  '@21st-sdk/react@0.2.1':
+    resolution: {integrity: sha512-SJvjmQ+WKezZ1jeLItckklyL5ydap/JlsIEaFiuxkXH5EcZIFyL7r2INucABvtFclOFQ3miL4+aXE2CbPtdMIQ==}
     peerDependencies:
       '@ai-sdk/react': ^2.0.0
       ai: ^5.0.0
@@ -1227,13 +1227,13 @@ packages:
 
 snapshots:
 
-  '@21st-sdk/agent@0.0.7(zod@3.25.76)':
+  '@21st-sdk/agent@0.0.8(zod@3.25.76)':
     dependencies:
       zod: 3.25.76
 
-  '@21st-sdk/nextjs@0.0.10(@21st-sdk/react@0.2.0(@ai-sdk/react@2.0.139(react@19.2.4)(zod@3.25.76))(@types/react@19.2.14)(ai@5.0.137(zod@3.25.76))(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@ai-sdk/react@2.0.139(react@19.2.4)(zod@3.25.76))(ai@5.0.137(zod@3.25.76))(next@15.5.12(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+  '@21st-sdk/nextjs@0.0.10(@21st-sdk/react@0.2.1(@ai-sdk/react@2.0.139(react@19.2.4)(zod@3.25.76))(@types/react@19.2.14)(ai@5.0.137(zod@3.25.76))(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@ai-sdk/react@2.0.139(react@19.2.4)(zod@3.25.76))(ai@5.0.137(zod@3.25.76))(next@15.5.12(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
-      '@21st-sdk/react': 0.2.0(@ai-sdk/react@2.0.139(react@19.2.4)(zod@3.25.76))(@types/react@19.2.14)(ai@5.0.137(zod@3.25.76))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@21st-sdk/react': 0.2.1(@ai-sdk/react@2.0.139(react@19.2.4)(zod@3.25.76))(@types/react@19.2.14)(ai@5.0.137(zod@3.25.76))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@ai-sdk/react': 2.0.139(react@19.2.4)(zod@3.25.76)
       ai: 5.0.137(zod@3.25.76)
       next: 15.5.12(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -1242,7 +1242,7 @@ snapshots:
 
   '@21st-sdk/node@0.0.4': {}
 
-  '@21st-sdk/react@0.2.0(@ai-sdk/react@2.0.139(react@19.2.4)(zod@3.25.76))(@types/react@19.2.14)(ai@5.0.137(zod@3.25.76))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+  '@21st-sdk/react@0.2.1(@ai-sdk/react@2.0.139(react@19.2.4)(zod@3.25.76))(@types/react@19.2.14)(ai@5.0.137(zod@3.25.76))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@ai-sdk/react': 2.0.139(react@19.2.4)(zod@3.25.76)
       ai: 5.0.137(zod@3.25.76)

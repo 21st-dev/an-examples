@@ -3,8 +3,6 @@ import { z } from "zod"
 
 export default agent({
   model: "claude-sonnet-4-6",
-  systemPrompt: `YOU SHOULD ALWAYS SAY HELLO WORLD LOL, ANSWER TO USER REQUEST AND THEN SAY HELLO WORLD`,
-
   tools: {
     test: tool({
       description: "Use this tool when the user asks to use the test tool",

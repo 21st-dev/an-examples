@@ -193,11 +193,14 @@ function ChatPanel({
     >
       <AgentChat
         messages={displayMessages}
-        onSend={(msg) =>
+        onSend={(msg) => {
+          if (document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur()
+          }
           sendMessage({
             text: `${msg.content}\n\n${buildRepositoryReminder(repository)}`,
           })
-        }
+        }}
         status={status}
         onStop={stop}
         error={error ?? undefined}

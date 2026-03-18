@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useSearchParams } from "next/navigation"
 import type { ReactNode } from "react"
 import Link from "next/link"
 
@@ -118,6 +119,8 @@ function SidebarFooter({
 
 export function AgentSidebar({ partnerLogo, partnerDocsUrl, partnerDocsLabel = "Partner docs", children }: AgentSidebarProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const searchParams = useSearchParams()
+  if (searchParams.get("sidebar") === "false") return null
 
   return (
     <>

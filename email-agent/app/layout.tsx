@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import "./globals.css"
 
 export const metadata: Metadata = {
+  icons: { icon: "/favicon.svg" },
   title: "21st Email Agent Boilerplate",
   description: "Hackathon-ready Next.js + 21st SDK + AgentMail template for outbound and inbox workflows",
 }

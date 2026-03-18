@@ -5,6 +5,7 @@ import "./globals.css"
 export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
+  icons: { icon: "/favicon.svg" },
   title: "21st Note Taker Agent",
   description: "Hackathon-ready Next.js + 21st SDK + Convex note-taking agent template",
 }

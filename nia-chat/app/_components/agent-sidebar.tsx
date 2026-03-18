@@ -122,7 +122,7 @@ export function AgentSidebar({ partnerLogo, partnerDocsUrl, partnerDocsLabel = "
   return (
     <>
       {/* ── Desktop sidebar ─────────────────────────────── */}
-      <aside className="hidden md:flex h-screen w-[260px] shrink-0 flex-col border-r border-black/[0.06] dark:border-white/[0.06] bg-[hsl(var(--background))]">
+      <aside className="hidden xs:flex h-screen w-[260px] shrink-0 flex-col border-r border-black/[0.06] dark:border-white/[0.06] bg-background">
         <SidebarHeader partnerLogo={partnerLogo} />
         <div className="flex-1 overflow-y-auto px-2 py-3 space-y-4">
           {children}
@@ -131,36 +131,36 @@ export function AgentSidebar({ partnerLogo, partnerDocsUrl, partnerDocsLabel = "
       </aside>
 
       {/* ── Mobile topbar (in document flow, h-12) ──────── */}
-      <div className="flex md:hidden h-12 shrink-0 items-center gap-2 px-3 border-b border-black/[0.06] dark:border-white/[0.06] bg-[hsl(var(--background))]">
+      <div className="flex xs:hidden h-12 shrink-0 items-center gap-2 px-3 border-b border-black/[0.06] dark:border-white/[0.06] bg-background">
         <button
           type="button"
           onClick={() => setMobileOpen(true)}
-          className="flex h-8 w-8 items-center justify-center rounded-md text-black/60 dark:text-white/60 transition-[background-color,transform] duration-150 ease-out hover:bg-black/[0.05] dark:hover:bg-white/[0.05] hover:text-[hsl(var(--foreground))] active:scale-[0.97]"
+          className="flex h-8 w-8 items-center justify-center rounded-md text-black/60 dark:text-white/60 transition-[background-color,transform] duration-150 ease-out hover:bg-black/[0.05] dark:hover:bg-white/[0.05] hover:text-foreground active:scale-[0.97]"
           aria-label="Open menu"
         >
           <MenuIcon />
         </button>
-        <div className="flex items-center gap-1.5 text-[hsl(var(--foreground))]">
+        <div className="flex items-center gap-1.5 text-foreground">
           <Logo21st />
           <span className="text-sm font-medium">21st</span>
         </div>
         {partnerLogo && (
           <>
             <span className="text-[10px] text-black/20 dark:text-white/20 select-none">×</span>
-            <div className="text-[hsl(var(--foreground))] min-w-0 overflow-hidden">{partnerLogo}</div>
+            <div className="text-foreground min-w-0 overflow-hidden">{partnerLogo}</div>
           </>
         )}
       </div>
 
       {/* ── Mobile backdrop ──────────────────────────────── */}
       <div
-        className={`md:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+        className={`xs:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
         onClick={() => setMobileOpen(false)}
       />
 
       {/* ── Mobile drawer ────────────────────────────────── */}
       <aside
-        className={`md:hidden fixed left-0 top-0 bottom-0 w-[280px] z-50 flex flex-col border-r border-black/[0.06] dark:border-white/[0.06] bg-[hsl(var(--background))] transition-transform duration-300 ease-in-out ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}
+        className={`xs:hidden fixed left-0 top-0 bottom-0 w-[280px] z-50 flex flex-col border-r border-black/[0.06] dark:border-white/[0.06] bg-background transition-transform duration-300 ease-in-out ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         <SidebarHeader partnerLogo={partnerLogo} onClose={() => setMobileOpen(false)} />
         <div className="flex-1 overflow-y-auto px-2 py-3 space-y-4">

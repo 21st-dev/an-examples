@@ -413,7 +413,7 @@ function HomeContent() {
 
   if (!isStorageReady) {
     return (
-      <div className={`flex flex-col md:flex-row h-[100svh] max-h-[100svh] overflow-hidden ${themeClass}`}>
+      <div className={`flex flex-col xs:flex-row h-[100svh] max-h-[100svh] overflow-hidden ${themeClass}`}>
         {niaSidebar}
         <main className="flex flex-1 min-h-0 min-w-0 max-w-full overflow-hidden bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
           <InitialLoader />
@@ -423,7 +423,7 @@ function HomeContent() {
   }
 
   return (
-    <div className={`flex flex-col md:flex-row h-[100svh] max-h-[100svh] overflow-hidden ${themeClass}`}>
+    <div className={`flex flex-col xs:flex-row h-[100svh] max-h-[100svh] overflow-hidden ${themeClass}`}>
       {niaSidebar}
       <main className="flex flex-1 min-h-0 min-w-0 max-w-full overflow-hidden bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
         {sessions.length > 0 ? (

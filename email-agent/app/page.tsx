@@ -99,7 +99,7 @@ function ChatPanel({
   ]
 
   return (
-    <div className={`flex flex-col md:flex-row h-screen bg-background text-foreground${colorMode === "dark" ? " dark" : ""}`}>
+    <div className={`flex flex-col xs:flex-row h-screen bg-background text-foreground${colorMode === "dark" ? " dark" : ""}`}>
       <AgentSidebar partnerLogo={<AgentMailLogo />} partnerDocsUrl="https://docs.agentmail.to" partnerDocsLabel="AgentMail docs">
         <SetupChecklist agentOnline={agentOnline} />
         <SidebarSection label="Quick prompts">

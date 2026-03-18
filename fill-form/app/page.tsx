@@ -432,7 +432,7 @@ function FormAgent({
   const agentOnline = !error && messages.length > 0
 
   return (
-    <div className={`flex flex-col md:flex-row h-screen bg-background text-foreground${colorMode === "dark" ? " dark" : ""}`}>
+    <div className={`flex flex-col xs:flex-row h-screen bg-background text-foreground${colorMode === "dark" ? " dark" : ""}`}>
       <AgentSidebar>
         <SetupChecklist agentOnline={agentOnline} />
       </AgentSidebar>

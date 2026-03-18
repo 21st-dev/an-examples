@@ -36,9 +36,9 @@ web-scraper/
 cp .env.example .env.local
 ```
 
-Set:
-- `API_KEY_21ST`
-- `BROWSER_USE_API_KEY`
+Set in `.env.local`:
+- `API_KEY_21ST` — server-side key for token exchange
+- `BROWSER_USE_API_KEY` — for the status check endpoint
 - optional `BROWSER_USE_BASE_URL`
 
 ### 2) Install and deploy
@@ -49,7 +49,11 @@ npx @21st-sdk/cli login
 npx @21st-sdk/cli deploy
 ```
 
-Deploy `agents/web-scraper.ts` as slug `web-scraper` (or update slug references if you choose a different name).
+After deploying, go to [21st.dev/agents](https://21st.dev/agents) → your agent → **Environment Variables** and add `BROWSER_USE_API_KEY` (the agent tools run in the trusted remote environment and read it from there). Then redeploy:
+
+```bash
+npx @21st-sdk/cli deploy
+```
 
 ### 3) Run locally
 

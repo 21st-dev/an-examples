@@ -43,7 +43,18 @@ npx @21st-sdk/cli login
 npx @21st-sdk/cli deploy
 ```
 
-After deploying, go to the 21st dashboard and set `AGENTMAIL_API_KEY` and `AGENTMAIL_INBOX_ID` in the agent's environment variables section.
+After deploying, go to [21st.dev/agents](https://21st.dev/agents) → your agent → **Environment Variables** and add:
+
+```
+AGENTMAIL_API_KEY=your_agentmail_api_key
+AGENTMAIL_INBOX_ID=you@agentmail.to
+```
+
+Then redeploy so the agent picks up the new variables:
+
+```bash
+npx @21st-sdk/cli deploy
+```
 
 ### 3. Configure and run
 

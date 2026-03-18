@@ -233,7 +233,7 @@ function HomeContent() {
   }
 
   return (
-    <div className={`flex flex-col md:flex-row h-screen bg-background text-foreground ${themeClass}`}>
+    <div className={`flex flex-col xs:flex-row h-screen bg-background text-foreground ${themeClass}`}>
       <AgentSidebar>
         <SetupChecklist agentOnline={agentOnline} />
       </AgentSidebar>

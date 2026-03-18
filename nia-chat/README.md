@@ -17,7 +17,9 @@ The agent runs inside a sandbox with [Nia skill scripts](https://docs.trynia.ai/
 - `NIA_API_KEY` — Nia API key
 - deployed `nia-agent-v2`
 
-`NIA_API_KEY` must exist both in `.env.local` (for the Next.js server to resolve/index repos) and in the deployed sandbox environment (for the Nia skill scripts).
+`NIA_API_KEY` must exist in two places:
+- `.env.local` — for the Next.js server to resolve/index repos via the Nia API
+- **21st dashboard env vars** — for the Nia skill scripts running inside the agent sandbox
 
 ## Quick start
 
@@ -28,11 +30,22 @@ cp .env.example .env.local
 pnpm install
 ```
 
-Set `API_KEY_21ST` and `NIA_API_KEY` in `.env.local`, then deploy and run:
+Set `API_KEY_21ST` and `NIA_API_KEY` in `.env.local`, then deploy:
 
 ```bash
 npx @21st-sdk/cli login
 npx @21st-sdk/cli deploy
+```
+
+Go to [21st.dev/agents](https://21st.dev/agents) → your agent → **Environment Variables** and add `NIA_API_KEY`. Then redeploy so the agent picks it up:
+
+```bash
+npx @21st-sdk/cli deploy
+```
+
+Now run locally:
+
+```bash
 pnpm dev
 ```
 

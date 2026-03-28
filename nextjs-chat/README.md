@@ -1,4 +1,4 @@
-# 21st SDK — Next.js Chat Example
+# 21st SDK — Next.js Starter
 
 Deploy a Claude Code agent with a custom web search tool and connect it to a streaming chat UI.
 

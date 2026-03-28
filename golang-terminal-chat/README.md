@@ -1,4 +1,4 @@
-# Go Terminal Chat
+# Go Starter
 
 Interactive terminal chat client for [21st Agents](https://21st.dev/agents), built with the [Go SDK](https://github.com/21st-dev/21st-sdk-go).
 

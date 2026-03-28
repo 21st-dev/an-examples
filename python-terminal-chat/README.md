@@ -1,4 +1,4 @@
-# 21st SDK — Python Terminal Chat
+# 21st SDK — Python Starter
 
 A minimal terminal chat example for the 21st Python SDK. It connects to a deployed agent, creates a sandbox and thread, then streams responses directly in your terminal.
 

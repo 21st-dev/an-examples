@@ -1,9 +1,9 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { Suspense, useEffect, useMemo, useState } from "react"
 import { useChat } from "@ai-sdk/react"
 import { createAgentChat, AgentChat } from "@21st-sdk/nextjs"
-import { useSearchParams, Suspense } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import type { Chat } from "@ai-sdk/react"
 import type { UIMessage } from "ai"
 import "@21st-sdk/react/styles.css"

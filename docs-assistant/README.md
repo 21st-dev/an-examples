@@ -80,6 +80,7 @@ docs-assistant/
 │   └── docs-assistant/
 │       └── index.ts              # Agent definition (deploy this)
 ├── app/
+│   ├── api/agent/sandbox/route.ts  # Sandbox creator
 │   ├── api/agent/token/route.ts  # Token handler
 │   ├── page.tsx                  # Chat UI
 │   ├── layout.tsx                # Root layout
